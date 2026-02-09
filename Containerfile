@@ -22,7 +22,9 @@ RUN apt-get update && apt-get install -y \
     libxkbcommon-dev \
     libxkbcommon-x11-dev \
     protobuf-compiler \
-    xdg-utils
+    xdg-utils \
+    wine \
+    zenity
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
 
@@ -71,6 +73,7 @@ USER maxima
 
 # Create the required dirs
 RUN mkdir -p \
+    "$HOME/.cache"
     "$HOME/.local/share/applications" \
     "$HOME/maxima/games/Battlefield 1" \
     "$HOME/maxima/games/Battlefield V"
