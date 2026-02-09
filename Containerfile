@@ -76,9 +76,9 @@ USER maxima
 RUN mkdir -p \
     "$HOME/.cache" \
     "$HOME/.local/share/applications" \
-    "$HOME/maxima/games/Battlefield 1" \
-    "$HOME/maxima/games/Battlefield V"
+    "$HOME/Games/Battlefield 1" \
+    "$HOME/Games/Battlefield V"
 
-WORKDIR /home/maxima/games
+WORKDIR /home/maxima/.local/share/maxima
 
 CMD ["maxima-cli"]
