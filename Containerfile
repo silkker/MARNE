@@ -6,6 +6,8 @@ EXPOSE 25200
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUSTFLAGS="-C target-feature=+crt-static"
 ENV CARGO_TERM_COLOR=always
+ENV MAXIMA_DISABLE_WINE_VERIFICATION=1
+ENV MAXIMA_DISABLE_QRC=1
 
 # Dependencies
 RUN dpkg --add-architecture i386
@@ -24,8 +26,25 @@ RUN apt-get update && apt-get install -y \
     libxkbcommon-x11-dev \
     protobuf-compiler \
     xdg-utils \
-    wine \
-    zenity
+    zenity \
+    gnupg2 \
+    winbind \
+    xvfb \
+    ca-certificates \
+    tar \
+    xz-utils \
+    unzip \
+    lib32gcc-s1 \
+    lib32stdc++6 \
+    libc6-i386
+
+# Wine from the upstream repo
+RUN dpkg --add-architecture i386 && \
+    mkdir -pm755 /etc/apt/keyrings && \
+    wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key && \
+    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources && \
+    apt-get update && \
+    apt-get install -y --install-recommends winehq-devel""
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
 
@@ -75,9 +94,12 @@ USER maxima
 # Create the required dirs
 RUN mkdir -p \
     "$HOME/.cache" \
-    "$HOME/.local/share/applications" \
+    "$HOME/.local/share/wineprefixes/maxima" \
     "$HOME/Games/Battlefield 1" \
     "$HOME/Games/Battlefield V"
+
+# Start wine to init pfx
+#RUN WINEPREFIX=$HOME/.local/share/wineprefixes/maxima xvfb-run wine 123.exe
 
 WORKDIR /home/maxima/.local/share/maxima
 
