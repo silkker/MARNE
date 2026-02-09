@@ -21,7 +21,8 @@ RUN apt-get update && apt-get install -y \
     libxi-dev \
     libxkbcommon-dev \
     libxkbcommon-x11-dev \
-    protobuf-compiler
+    protobuf-compiler \
+    xdg-utils
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
 
@@ -57,12 +58,17 @@ RUN install -Dm755 \
       target/x86_64-unknown-linux-musl/release/maxima \
       /usr/local/bin/
 
+# Create non-root user
+RUN useradd -m -u 1000 -s /bin/bash maxima
+
+USER maxima
+
 # Create the required dirs
 RUN mkdir -p \
-    "/root/.local/share/applications" \
-    "/opt/games/Battlefield 1" \
-    "/opt/games/Battlefield V"
+    "$HOME/maxima/.local/share/applications" \
+    "$HOME/maxima/games/Battlefield 1" \
+    "$HOME/maxima/games/Battlefield V"
 
-WORKDIR /opt/games
+WORKDIR /home/maxima/games
 
 CMD ["maxima-cli"]
