@@ -11,6 +11,7 @@ ENV CARGO_TERM_COLOR=always
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get install -y \
     sudo \
+    nano \
     git \
     curl \
     cargo \
@@ -73,7 +74,7 @@ USER maxima
 
 # Create the required dirs
 RUN mkdir -p \
-    "$HOME/.cache"
+    "$HOME/.cache" \
     "$HOME/.local/share/applications" \
     "$HOME/maxima/games/Battlefield 1" \
     "$HOME/maxima/games/Battlefield V"
