@@ -1,16 +1,16 @@
-FROM ubuntu:latest
+FROM ubuntu:24.04
 
 EXPOSE 25200
 
 # Env vars
 ENV DEBIAN_FRONTEND=noninteractive
-ENV CARGO_TERM_COLOR=always
 ENV RUSTFLAGS="-C target-feature=+crt-static"
-ENV PATH="/root/.cargo/bin:${PATH}"
+ENV CARGO_TERM_COLOR=always
 
 # Dependencies
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get install -y \
+    sudo \
     git \
     curl \
     cargo \
@@ -26,7 +26,8 @@ RUN apt-get update && apt-get install -y \
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
 
-RUN rustup target add x86_64-unknown-linux-musl
+RUN export PATH="/root/.cargo/bin:$PATH" \
+ && rustup target add x86_64-unknown-linux-musl
 
 # umu
 RUN set -eux; \
@@ -48,7 +49,8 @@ RUN git clone --recursive https://github.com/ArmchairDevelopers/maxima \
  && git checkout cbde5f0002d6f16fb67dfa79ad96b705e1c591bf
 
 WORKDIR /build/maxima
-RUN cargo build --release --target x86_64-unknown-linux-musl
+RUN export PATH="/root/.cargo/bin:$PATH" \
+ && cargo build --release --target x86_64-unknown-linux-musl
 
 # Install binaries
 RUN install -Dm755 \
@@ -58,8 +60,12 @@ RUN install -Dm755 \
       target/x86_64-unknown-linux-musl/release/maxima \
       /usr/local/bin/
 
-# Create non-root user
-RUN useradd -m -u 1000 -s /bin/bash maxima
+# Create user
+RUN useradd -m -s /bin/bash maxima
+
+# Give maxima sudo without password
+RUN echo "maxima ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/maxima \
+ && chmod 0440 /etc/sudoers.d/maxima
 
 USER maxima
 
