@@ -71,7 +71,7 @@ USER maxima
 
 # Create the required dirs
 RUN mkdir -p \
-    "$HOME/maxima/.local/share/applications" \
+    "$HOME/.local/share/applications" \
     "$HOME/maxima/games/Battlefield 1" \
     "$HOME/maxima/games/Battlefield V"
 
