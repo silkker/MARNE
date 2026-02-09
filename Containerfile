@@ -52,10 +52,11 @@ RUN dpkg --add-architecture i386 && \
 WORKDIR /home/maxima
 
 # Wine-GE (Will remove this as soon as possible)
-RUN wget -O wine-ge-custom.tar.xz https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz && \
+RUN curl -L -o wine-ge-custom.tar.xz \
+        https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz && \
     mkdir -p /home/maxima/wine && \
     tar -xf wine-ge-custom.tar.xz -C /home/maxima/wine --strip-components=1 && \
-    rm wine-ge-custom.tar.xz
+    rm -f wine-ge-custom.tar.xz
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
 
