@@ -7,6 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV RUSTFLAGS="-C target-feature=+crt-static"
 ENV CARGO_TERM_COLOR=always
 ENV MAXIMA_DISABLE_WINE_VERIFICATION=1
+ENV MAXIMA_WINE_COMMAND="/home/maxima/wine/bin/wine64"
 ENV MAXIMA_DISABLE_QRC=1
 
 # Dependencies
@@ -47,6 +48,14 @@ RUN dpkg --add-architecture i386 && \
         -o /etc/apt/sources.list.d/winehq-noble.sources && \
     apt-get update && \
     apt-get install -y --install-recommends winehq-devel
+
+WORKDIR /home/maxima
+
+# Wine-GE (Will remove this as soon as possible)
+RUN wget -O wine-ge-custom.tar.xz https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz && \
+    mkdir -p /home/maxima/wine && \
+    tar -xf wine-ge-custom.tar.xz -C /home/maxima/wine --strip-components=1 && \
+    rm wine-ge-custom.tar.xz
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
 
@@ -96,12 +105,13 @@ USER maxima
 # Create the required dirs
 RUN mkdir -p \
     "$HOME/.cache" \
+    "$HOME/.local/share/applications" \
     "$HOME/.local/share/wineprefixes/maxima" \
-    "$HOME/Games/Battlefield 1" \
-    "$HOME/Games/Battlefield V"
+    "$HOME/Games/Battlefield_1" \
+    "$HOME/Games/Battlefield_V"
 
 # Start wine to init pfx
-#RUN WINEPREFIX=$HOME/.local/share/wineprefixes/maxima xvfb-run wine 123.exe
+#RUN set -euo pipefail && WINEPREFIX=$HOME/.local/share/wineprefixes/maxima xvfb-run /home/maxima/wine/bin/wine64 winecfg
 
 WORKDIR /home/maxima/.local/share/maxima
 
