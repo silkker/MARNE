@@ -41,8 +41,7 @@ RUN apt-get update && apt-get install -y \
     libc6-i386
 
 # Wine from the upstream repo
-RUN dpkg --add-architecture i386 && \
-    mkdir -pm755 /etc/apt/keyrings && \
+RUN mkdir -pm755 /etc/apt/keyrings && \
     curl -fsSL https://dl.winehq.org/wine-builds/winehq.key \
         -o /etc/apt/keyrings/winehq-archive.key && \
     curl -fsSL https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources \
@@ -87,7 +86,7 @@ RUN install -Dm755 \
       /usr/local/bin/
 
 # Create Xvfb display
-Xvfb :1 -screen 0 1024x768x16 &
+RUN Xvfb :1 -screen 0 1024x768x16 &
 
 # Create user
 RUN useradd -m -s /bin/bash maxima
