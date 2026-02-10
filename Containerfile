@@ -98,7 +98,7 @@ USER maxima
 RUN mkdir -p \
     "$HOME/.cache" \
     "$HOME/.local/share/applications" \
-    "$HOME/.local/share/wineprefixes/maxima" \
+    "$HOME/.local/share/maxima/wine/prefix" \
     "$HOME/Games/Battlefield_1" \
     "$HOME/Games/Battlefield_V"
 
@@ -112,7 +112,9 @@ RUN curl -L -o wine-ge-custom.tar.xz \
     rm -f wine-ge-custom.tar.xz
 
 # Start wine to init pfx
-#RUN set -euo pipefail && WINEPREFIX=$HOME/.local/share/wineprefixes/maxima xvfb-run /home/maxima/wine/bin/wine64 winecfg
+RUN WINEPREFIX=$HOME/.local/share/maxima/wine/prefix $HOME/wine/bin/wine64 wineboot -u && sudo pkill -9 -f "\\.exe"
+
+#RUN set -euo pipefail && WINEPREFIX=$HOME/.local/share/maxima/wine/prefix xvfb-run $HOME/wine/bin/wine64 winecfg
 
 WORKDIR /home/maxima/.local/share/maxima
 
