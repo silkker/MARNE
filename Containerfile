@@ -104,7 +104,7 @@ RUN mkdir -p \
 
 WORKDIR /home/maxima
 
-# ge-proton latest (tested version:GE-Proton10-30)
+# ge-proton latest (tested version: GE-Proton10-30)
 RUN set -eux; \
     ver="$( \
       curl -sIL https://github.com/GloriousEggroll/proton-ge-custom/releases/latest \
@@ -112,10 +112,12 @@ RUN set -eux; \
       | sed -E 's|.*tag/||' \
       | tr -d '\r' \
     )"; \
-    curl -Lo /tmp/ge-proton.tar.gz \
+    curl -fSL -o /tmp/ge-proton.tar.gz \
       "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${ver}/${ver}.tar.gz"; \
-    tar -xf ge-proton.tar.gz -C $HOME/ge-proton --strip-components=1 &&
-    rm -f /tmp/ge-proton.tar.gz;
+    mkdir -p "$HOME/ge-proton"; \
+    tar -xf /tmp/ge-proton.tar.gz -C "$HOME/ge-proton" --strip-components=1; \
+    rm -f /tmp/ge-proton.tar.gz
+
 
 # Start wine to init pfx
 RUN xvfb-run -a \
@@ -126,4 +128,3 @@ RUN xvfb-run -a \
 WORKDIR /home/maxima/.local/share/maxima
 
 CMD ["xvfb-run", "-a", "--server-args=-screen 0 1024x768x24", "maxima-cli"]
-
