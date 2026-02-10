@@ -3,7 +3,6 @@ FROM ubuntu:24.04
 EXPOSE 25200
 
 # Env vars
-ENV DISPLAY=:1
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUSTFLAGS="-C target-feature=+crt-static"
 ENV CARGO_TERM_COLOR=always
