@@ -124,6 +124,11 @@ RUN set -eux; \
     tar -xf /tmp/ge-proton.tar.gz -C "$HOME/ge-proton" --strip-components=1; \
     rm -f /tmp/ge-proton.tar.gz
 
+# Entrypoint
+COPY entrypoint.sh /home/maxima/entrypoint.sh
+RUN chmod +x /home/maxima/entrypoint.sh && \
+    sed -i -e 's/\r$//' /home/maxima/entrypoint.sh
+
 WORKDIR /home/maxima/.local/share/maxima
 
-CMD ["xvfb-run", "-a", "--server-args=-screen 0 1024x768x24", "maxima-cli"]
+ENTRYPOINT ["/home/maxima/entrypoint.sh"]
