@@ -124,12 +124,6 @@ RUN set -eux; \
     tar -xf /tmp/ge-proton.tar.gz -C "$HOME/ge-proton" --strip-components=1; \
     rm -f /tmp/ge-proton.tar.gz
 
-# Start wine to init pfx
-RUN xvfb-run -a \
-    --server-args="-screen 0 1024x768x24" \
-    env WINEPREFIX="$HOME/.local/share/maxima/wine/prefix" \
-    "$HOME/ge-proton/files/bin/wine64" 123.exe || true
-
 WORKDIR /home/maxima/.local/share/maxima
 
 CMD ["xvfb-run", "-a", "--server-args=-screen 0 1024x768x24", "maxima-cli"]
