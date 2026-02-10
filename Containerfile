@@ -100,7 +100,7 @@ USER maxima
 RUN mkdir -p \
     "$HOME/.cache" \
     "$HOME/ge-proton" \
-    "$HOME/.local/share/applications"
+    "$HOME/.local/share/applications" \
     "$HOME/.local/share/maxima/wine/prefix" \
     "$HOME/Games/Battlefield_1" \
     "$HOME/Games/Battlefield_V"
