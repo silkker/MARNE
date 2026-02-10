@@ -97,7 +97,7 @@ USER maxima
 # Create the required dirs
 RUN mkdir -p \
     "$HOME/.cache" \
-    "$HOME/ge-proton", \
+    "$HOME/ge-proton" \
     "$HOME/.local/share/maxima/wine/prefix" \
     "$HOME/Games/Battlefield_1" \
     "$HOME/Games/Battlefield_V"
