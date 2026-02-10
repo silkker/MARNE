@@ -116,8 +116,7 @@ RUN curl -L -o wine-ge-custom.tar.xz \
 
 # Start wine to init pfx
 RUN WINEPREFIX="$HOME/.local/share/maxima/wine/prefix" \
-    "$HOME/wine/bin/wine64" wineboot -u && \
-    sudo pkill -9 -f '\.exe'
+    "$HOME/wine/bin/wine64" wineboot -u
 
 #RUN set -euo pipefail && WINEPREFIX=$HOME/.local/share/maxima/wine/prefix xvfb-run $HOME/wine/bin/wine64 winecfg
 
