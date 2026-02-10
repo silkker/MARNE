@@ -49,15 +49,6 @@ RUN dpkg --add-architecture i386 && \
     apt-get update && \
     apt-get install -y --install-recommends winehq-devel
 
-WORKDIR /home/maxima
-
-# Wine-GE (Will remove this as soon as possible)
-RUN curl -L -o wine-ge-custom.tar.xz \
-        https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz && \
-    mkdir -p /home/maxima/wine && \
-    tar -xf wine-ge-custom.tar.xz -C /home/maxima/wine --strip-components=1 && \
-    rm -f wine-ge-custom.tar.xz
-
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
 
 RUN export PATH="/root/.cargo/bin:$PATH" \
@@ -110,6 +101,13 @@ RUN mkdir -p \
     "$HOME/.local/share/wineprefixes/maxima" \
     "$HOME/Games/Battlefield_1" \
     "$HOME/Games/Battlefield_V"
+
+# Wine-GE (Will remove this as soon as possible)
+RUN curl -L -o wine-ge-custom.tar.xz \
+        https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz && \
+    mkdir -p /home/maxima/wine && \
+    tar -xf wine-ge-custom.tar.xz -C /home/maxima/wine --strip-components=1 && \
+    rm -f wine-ge-custom.tar.xz
 
 # Start wine to init pfx
 #RUN set -euo pipefail && WINEPREFIX=$HOME/.local/share/wineprefixes/maxima xvfb-run /home/maxima/wine/bin/wine64 winecfg
