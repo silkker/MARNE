@@ -3,6 +3,7 @@ FROM ubuntu:24.04
 EXPOSE 25200
 
 # Env vars
+ENV DISPLAY=:1
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUSTFLAGS="-C target-feature=+crt-static"
 ENV CARGO_TERM_COLOR=always
@@ -85,6 +86,9 @@ RUN install -Dm755 \
       target/x86_64-unknown-linux-musl/release/maxima \
       /usr/local/bin/
 
+# Create Xvfb display
+Xvfb :1 -screen 0 1024x768x16 &
+
 # Create user
 RUN useradd -m -s /bin/bash maxima
 
@@ -112,7 +116,9 @@ RUN curl -L -o wine-ge-custom.tar.xz \
     rm -f wine-ge-custom.tar.xz
 
 # Start wine to init pfx
-RUN WINEPREFIX=$HOME/.local/share/maxima/wine/prefix $HOME/wine/bin/wine64 wineboot -u && sudo pkill -9 -f "\\.exe"
+RUN WINEPREFIX="$HOME/.local/share/maxima/wine/prefix" \
+    "$HOME/wine/bin/wine64" wineboot -u && \
+    sudo pkill -9 -f '\.exe'
 
 #RUN set -euo pipefail && WINEPREFIX=$HOME/.local/share/maxima/wine/prefix xvfb-run $HOME/wine/bin/wine64 winecfg
 
