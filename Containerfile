@@ -9,11 +9,14 @@ ENV CARGO_TERM_COLOR=always
 ENV MAXIMA_DISABLE_WINE_VERIFICATION=1
 ENV MAXIMA_WINE_COMMAND="/home/maxima/ge-proton/files/bin/wine64"
 ENV MAXIMA_DISABLE_QRC=1
+#ENV WINEDLLOVERRIDES=dinput8=n,b
 
 # Dependencies
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get install -y \
     sudo \
+    strace \
+    htop \
     nano \
     git \
     curl \
@@ -97,13 +100,14 @@ USER maxima
 RUN mkdir -p \
     "$HOME/.cache" \
     "$HOME/ge-proton" \
+    "$HOME/.local/share/applications"
     "$HOME/.local/share/maxima/wine/prefix" \
     "$HOME/Games/Battlefield_1" \
     "$HOME/Games/Battlefield_V"
 
 WORKDIR /home/maxima
 
-# ge-proton latest (tested version:GE-Proton10-30)
+# ge-proton latest (tested version: GE-Proton10-30)
 RUN set -eux; \
     ver="$( \
       curl -sIL https://github.com/GloriousEggroll/proton-ge-custom/releases/latest \
@@ -111,16 +115,19 @@ RUN set -eux; \
       | sed -E 's|.*tag/||' \
       | tr -d '\r' \
     )"; \
-    curl -Lo /tmp/ge-proton.tar.gz \
+    curl -fSL -o /tmp/ge-proton.tar.gz \
       "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${ver}/${ver}.tar.gz"; \
-    tar -xf /tmp/ge-proton.tar.gz -C "$HOME/ge-proton" --strip-components=1
+    mkdir -p "$HOME/ge-proton"; \
+    tar -xf /tmp/ge-proton.tar.gz -C "$HOME/ge-proton" --strip-components=1; \
+    rm -f /tmp/ge-proton.tar.gz
 
 # Start wine to init pfx
 RUN xvfb-run -a \
     --server-args="-screen 0 1024x768x24" \
     env WINEPREFIX="$HOME/.local/share/maxima/wine/prefix" \
-    "$HOME/ge-proton/files/bin/wine64" wineboot -i
+    "$HOME/ge-proton/files/bin/wine64" 123.exe
 
-WORKDIR /home/maxima/.local/share/maxima
+WORKDIR /home/maxima/.local/share/maxima/wine/
+#WORKDIR /home/maxima/.local/share/maxima
 
 CMD ["xvfb-run", "-a", "--server-args=-screen 0 1024x768x24", "maxima-cli"]
