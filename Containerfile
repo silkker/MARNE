@@ -130,7 +130,6 @@ RUN xvfb-run -a \
     env WINEPREFIX="$HOME/.local/share/maxima/wine/prefix" \
     "$HOME/ge-proton/files/bin/wine64" 123.exe || true
 
-WORKDIR /home/maxima/.local/share/maxima/wine/
-#WORKDIR /home/maxima/.local/share/maxima
+WORKDIR /home/maxima/.local/share/maxima
 
 CMD ["xvfb-run", "-a", "--server-args=-screen 0 1024x768x24", "maxima-cli"]
