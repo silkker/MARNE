@@ -102,6 +102,8 @@ RUN mkdir -p \
     "$HOME/Games/Battlefield_1" \
     "$HOME/Games/Battlefield_V"
 
+WORKDIR /home/maxima
+
 # Wine-GE (Will remove this as soon as possible)
 RUN curl -L -o wine-ge-custom.tar.xz \
         https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz && \
