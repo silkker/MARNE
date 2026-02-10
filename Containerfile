@@ -85,9 +85,6 @@ RUN install -Dm755 \
       target/x86_64-unknown-linux-musl/release/maxima \
       /usr/local/bin/
 
-# Create Xvfb display
-RUN Xvfb :1 -screen 0 1024x768x16 &
-
 # Create user
 RUN useradd -m -s /bin/bash maxima
 
@@ -115,11 +112,12 @@ RUN curl -L -o wine-ge-custom.tar.xz \
     rm -f wine-ge-custom.tar.xz
 
 # Start wine to init pfx
-RUN WINEPREFIX="$HOME/.local/share/maxima/wine/prefix" \
-    "$HOME/wine/bin/wine64" wineboot -u
-
-#RUN set -euo pipefail && WINEPREFIX=$HOME/.local/share/maxima/wine/prefix xvfb-run $HOME/wine/bin/wine64 winecfg
+RUN xvfb-run -a \
+    --server-args="-screen 0 1024x768x24" \
+    env WINEPREFIX="$HOME/.local/share/maxima/wine/prefix" \
+    "$HOME/wine/bin/wine64" wineboot -i
 
 WORKDIR /home/maxima/.local/share/maxima
 
-CMD ["maxima-cli"]
+CMD ["xvfb-run", "-a", "--server-args=-screen 0 1024x768x24", "maxima-cli"]
+
