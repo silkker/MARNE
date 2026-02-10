@@ -124,8 +124,7 @@ RUN set -eux; \
     tar -xf /tmp/ge-proton.tar.gz -C "$HOME/ge-proton" --strip-components=1; \
     rm -f /tmp/ge-proton.tar.gz
 
-# Entrypoint
-COPY entrypoint.sh /home/maxima/entrypoint.sh
+COPY --chown=maxima:maxima entrypoint.sh /home/maxima/entrypoint.sh
 RUN chmod +x /home/maxima/entrypoint.sh && \
     sed -i -e 's/\r$//' /home/maxima/entrypoint.sh
 
