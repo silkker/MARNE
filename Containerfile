@@ -7,8 +7,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV RUSTFLAGS="-C target-feature=+crt-static"
 ENV CARGO_TERM_COLOR=always
 ENV MAXIMA_DISABLE_WINE_VERIFICATION=1
-ENV MAXIMA_WINE_COMMAND="/home/maxima/wine/bin/wine64"
+ENV MAXIMA_WINE_COMMAND="/home/maxima/ge-proton/files/bin/wine64"
 ENV MAXIMA_DISABLE_QRC=1
+ENV WINEDLLOVERRIDES=dinput8=n,b
 
 # Dependencies
 RUN dpkg --add-architecture i386
@@ -96,25 +97,31 @@ USER maxima
 # Create the required dirs
 RUN mkdir -p \
     "$HOME/.cache" \
-    "$HOME/.local/share/applications" \
+    "$HOME/ge-proton", \
     "$HOME/.local/share/maxima/wine/prefix" \
     "$HOME/Games/Battlefield_1" \
     "$HOME/Games/Battlefield_V"
 
 WORKDIR /home/maxima
 
-# Wine-GE (Will remove this as soon as possible)
-RUN curl -L -o wine-ge-custom.tar.xz \
-        https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-26/wine-lutris-GE-Proton8-26-x86_64.tar.xz && \
-    mkdir -p /home/maxima/wine && \
-    tar -xf wine-ge-custom.tar.xz -C /home/maxima/wine --strip-components=1 && \
-    rm -f wine-ge-custom.tar.xz
+# ge-proton latest (tested version:GE-Proton10-30)
+RUN set -eux; \
+    ver="$( \
+      curl -sIL https://github.com/GloriousEggroll/proton-ge-custom/releases/latest \
+      | grep -i '^location:' \
+      | sed -E 's|.*tag/||' \
+      | tr -d '\r' \
+    )"; \
+    curl -Lo /tmp/ge-proton.tar.gz \
+      "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${ver}/${ver}.tar.gz"; \
+    tar -xf ge-proton.tar.gz -C $HOME/ge-proton --strip-components=1 &&
+    rm -f /tmp/ge-proton.tar.gz;
 
 # Start wine to init pfx
 RUN xvfb-run -a \
     --server-args="-screen 0 1024x768x24" \
     env WINEPREFIX="$HOME/.local/share/maxima/wine/prefix" \
-    "$HOME/wine/bin/wine64" wineboot -i
+    "$HOME/ge-proton/files/bin/wine64" wineboot -i
 
 WORKDIR /home/maxima/.local/share/maxima
 
