@@ -6,10 +6,10 @@ EXPOSE 25200
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUSTFLAGS="-C target-feature=+crt-static"
 ENV CARGO_TERM_COLOR=always
-ENV MAXIMA_DISABLE_WINE_VERIFICATION=1
-ENV MAXIMA_WINE_COMMAND="/home/maxima/ge-proton/files/bin/wine64"
-ENV MAXIMA_DISABLE_QRC=1
 #ENV WINEDLLOVERRIDES=dinput8=n,b
+#ENV MAXIMA_DISABLE_WINE_VERIFICATION=1
+#ENV MAXIMA_WINE_COMMAND="/home/maxima/ge-proton/files/bin/wine64"
+#ENV MAXIMA_DISABLE_QRC=1
 
 # Dependencies
 RUN dpkg --add-architecture i386
@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     strace \
     htop \
     nano \
+    tmux \
     git \
     curl \
     cargo \
@@ -109,20 +110,6 @@ RUN mkdir -p \
     "$HOME/Games/Battlefield_V"
 
 WORKDIR /home/maxima
-
-# ge-proton latest (tested version: GE-Proton10-30)
-RUN set -eux; \
-    ver="$( \
-      curl -sIL https://github.com/GloriousEggroll/proton-ge-custom/releases/latest \
-      | grep -i '^location:' \
-      | sed -E 's|.*tag/||' \
-      | tr -d '\r' \
-    )"; \
-    curl -fSL -o /tmp/ge-proton.tar.gz \
-      "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${ver}/${ver}.tar.gz"; \
-    mkdir -p "$HOME/ge-proton"; \
-    tar -xf /tmp/ge-proton.tar.gz -C "$HOME/ge-proton" --strip-components=1; \
-    rm -f /tmp/ge-proton.tar.gz
 
 # Entrypoint
 COPY --chown=maxima:maxima entrypoint.sh /home/maxima/entrypoint.sh
