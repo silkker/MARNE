@@ -103,11 +103,9 @@ RUN echo "alias kill_exe='sudo pkill -9 -f "\\.exe"'" >> $HOME/.bashrc
 # Create the required dirs
 RUN mkdir -p \
     "$HOME/.cache" \
-    "$HOME/ge-proton" \
     "$HOME/.local/share/applications" \
     "$HOME/.local/share/maxima/wine/prefix" \
-    "$HOME/Games/Battlefield_1" \
-    "$HOME/Games/Battlefield_V"
+    "$HOME/Games"
 
 WORKDIR /home/maxima
 
@@ -119,6 +117,6 @@ RUN chmod +x /home/maxima/entrypoint.sh && \
 # auth.toml
 COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
 
-WORKDIR /home/maxima/.local/share/maxima
+WORKDIR /home/maxima/Games
 
 ENTRYPOINT ["/home/maxima/entrypoint.sh"]
