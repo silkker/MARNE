@@ -104,6 +104,7 @@ RUN echo "alias kill_exe='sudo pkill -9 -f "\\.exe"'" >> $HOME/.bashrc
 # Create the required dirs
 RUN mkdir -p \
     "$HOME/.cache" \
+    "$HOME/.config/tmux" \
     "$HOME/.local/share/applications" \
     "$HOME/.local/share/maxima/wine/prefix" \
     "$HOME/Games"
