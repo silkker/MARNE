@@ -120,6 +120,9 @@ RUN chmod +x /home/maxima/entrypoint.sh && \
 # auth.toml
 COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
 
+# tmux.conf
+#COPY --chown=maxima:maxima tmux.conf /home/maxima/.config/tmux/tmux.conf
+
 # Display server stuff
 ENV DISPLAY=:99
 #ENV WAYLAND_DISPLAY=wayland-1
