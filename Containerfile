@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y \
     zenity \
     gnupg2 \
     winbind \
+    dbus-x11 \
     xvfb \
     weston \
     xwayland-run \
@@ -125,6 +126,10 @@ COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
 
 # Display server stuff
 ENV DISPLAY=:99
+ENV SDL_VIDEODRIVER=x11
+ENV GDK_BACKEND=x11
+ENV LIBGL_ALWAYS_SOFTWARE=1
+
 #ENV WAYLAND_DISPLAY=wayland-1
 #ENV PROTON_ADD_CONFIG=wayland
 #ENV PROTON_ENABLE_WAYLAND=1
