@@ -140,4 +140,4 @@ ENV LIBGL_ALWAYS_SOFTWARE=1
 
 WORKDIR /home/maxima/Games
 
-ENTRYPOINT ["/home/maxima/entrypoint.sh"]
+#ENTRYPOINT ["/home/maxima/entrypoint.sh"]
