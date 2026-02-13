@@ -122,7 +122,7 @@ COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
 #COPY --chown=maxima:maxima tmux.conf /home/maxima/.config/tmux/tmux.conf
 
 # Display server stuff
-ENV DISPLAY=:99
+#ENV DISPLAY=:99
 #ENV SDL_VIDEODRIVER=x11
 #ENV GDK_BACKEND=x11
 #ENV LIBGL_ALWAYS_SOFTWARE=1
