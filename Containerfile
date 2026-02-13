@@ -121,6 +121,7 @@ RUN chmod +x /home/maxima/entrypoint.sh && \
 COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
 
 # Display server stuff
+ENV DISPLAY=:99
 #ENV WAYLAND_DISPLAY=wayland-1
 #ENV PROTON_ADD_CONFIG=wayland
 #ENV PROTON_ENABLE_WAYLAND=1
