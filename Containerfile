@@ -114,9 +114,9 @@ RUN mkdir -p \
 WORKDIR /home/maxima
 
 # Entrypoint
-COPY --chown=maxima:maxima entrypoint.sh /home/maxima/entrypoint.sh
-RUN chmod +x /home/maxima/entrypoint.sh && \
-    sed -i -e 's/\r$//' /home/maxima/entrypoint.sh
+#COPY --chown=maxima:maxima entrypoint.sh /home/maxima/entrypoint.sh
+#RUN chmod +x /home/maxima/entrypoint.sh && \
+#    sed -i -e 's/\r$//' /home/maxima/entrypoint.sh
 
 # auth.toml
 COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
