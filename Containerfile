@@ -120,12 +120,15 @@ RUN chmod +x /home/maxima/entrypoint.sh && \
 COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
 
 # Weston stuff
-ENV WAYLAND_DISPLAY=wayland-0
-ENV PROTON_ADD_CONFIG=wayland
-ENV PROTON_ENABLE_WAYLAND=1
+ENV WAYLAND_DISPLAY=wayland-1
+#ENV PROTON_ADD_CONFIG=wayland
+#ENV PROTON_ENABLE_WAYLAND=1
 ENV XDG_RUNTIME_DIR=/tmp/xdg-runtime
 RUN mkdir -p "$XDG_RUNTIME_DIR" \
- && chmod 700 "$XDG_RUNTIME_DIR"
+ && chmod 700 "$XDG_RUNTIME_DIR" \
+ && sudo mkdir /tmp/.X11-unix \
+ && sudo chown root:root /tmp/.X11-unix \
+ && sudo chmod 1777 /tmp/.X11-unix
 
 WORKDIR /home/maxima/Games
 
