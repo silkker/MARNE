@@ -35,6 +35,7 @@ RUN apt-get update && apt-get install -y \
     gnupg2 \
     winbind \
     weston \
+    xwayland-run \
     ca-certificates \
     tar \
     xz-utils \
