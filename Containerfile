@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y \
     zenity \
     gnupg2 \
     winbind \
+    xvfb \
     weston \
     xwayland-run \
     ca-certificates \
@@ -119,10 +120,11 @@ RUN chmod +x /home/maxima/entrypoint.sh && \
 # auth.toml
 COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
 
-# Weston stuff
-ENV WAYLAND_DISPLAY=wayland-1
+# Display server stuff
+#ENV WAYLAND_DISPLAY=wayland-1
 #ENV PROTON_ADD_CONFIG=wayland
 #ENV PROTON_ENABLE_WAYLAND=1
+
 ENV XDG_RUNTIME_DIR=/tmp/xdg-runtime
 RUN mkdir -p "$XDG_RUNTIME_DIR" \
  && chmod 700 "$XDG_RUNTIME_DIR" \
