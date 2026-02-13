@@ -1,7 +1,7 @@
 #!/bin/bash
 
 tmux new-session -A -s maxima \
-  'Xvfb :99 -screen 0 1024x768x24'
+  'xvfb-run -a --server-args="-screen 0 1024x768x16" maxima-cli'
 
 # One day
 # 'xwayland-run -- maxima-cli'
