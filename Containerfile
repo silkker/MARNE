@@ -36,10 +36,9 @@ RUN apt-get update && apt-get install -y \
     zenity \
     gnupg2 \
     winbind \
-    dbus-x11 \
     xvfb \
     xdotool \
-    weston \
+    cage \
     xwayland-run \
     ca-certificates \
     tar \
@@ -135,10 +134,10 @@ COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
 #ENV LIBGL_ALWAYS_SOFTWARE=1
 #ENV LIBGL_DRI3_DISABLE=1
 
+ENV PROTON_USE_WINED3D=1
+ENV PROTON_ENABLE_WAYLAND=1
 #ENV WAYLAND_DISPLAY=wayland-1
 #ENV PROTON_ADD_CONFIG=wayland
-#ENV PROTON_ENABLE_WAYLAND=1
-#ENV PROTON_USE_WINED3D=1
 
 #ENV XDG_RUNTIME_DIR=/tmp/xdg-runtime
 #RUN mkdir -p "$XDG_RUNTIME_DIR" \
