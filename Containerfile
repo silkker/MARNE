@@ -6,10 +6,10 @@ EXPOSE 25200
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUSTFLAGS="-C target-feature=+crt-static"
 ENV CARGO_TERM_COLOR=always
-#ENV WINEDLLOVERRIDES=dinput8=n,b
+ENV MAXIMA_DISABLE_QRC=1
 #ENV MAXIMA_DISABLE_WINE_VERIFICATION=1
 #ENV MAXIMA_WINE_COMMAND="/home/maxima/ge-proton/files/bin/wine64"
-#ENV MAXIMA_DISABLE_QRC=1
+#ENV WINEDLLOVERRIDES=dinput8=n,b
 
 # Dependencies
 RUN dpkg --add-architecture i386
@@ -21,7 +21,6 @@ RUN apt-get update && apt-get install -y \
     tmux \
     git \
     curl \
-    mesa-utils \
     cargo \
     musl-tools \
     locales \
