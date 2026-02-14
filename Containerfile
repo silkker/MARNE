@@ -38,6 +38,7 @@ RUN apt-get update && apt-get install -y \
     winbind \
     dbus-x11 \
     xvfb \
+    xdotool \
     weston \
     xwayland-run \
     ca-certificates \
