@@ -21,8 +21,10 @@ RUN apt-get update && apt-get install -y \
     tmux \
     git \
     curl \
+    mesa-utils \
     cargo \
     musl-tools \
+    locales \
     libx11-dev \
     libxcursor-dev \
     libxcb1-dev \
@@ -45,6 +47,10 @@ RUN apt-get update && apt-get install -y \
     lib32gcc-s1 \
     lib32stdc++6 \
     libc6-i386
+
+# Locale
+RUN sudo locale-gen en_US.UTF-8 \
+ && sudo update-locale LANG=en_US.UTF-8
 
 # Wine from the upstream repo
 RUN mkdir -pm755 /etc/apt/keyrings && \
@@ -126,10 +132,12 @@ COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
 #ENV SDL_VIDEODRIVER=x11
 #ENV GDK_BACKEND=x11
 #ENV LIBGL_ALWAYS_SOFTWARE=1
+#ENV LIBGL_DRI3_DISABLE=1
 
 #ENV WAYLAND_DISPLAY=wayland-1
 #ENV PROTON_ADD_CONFIG=wayland
 #ENV PROTON_ENABLE_WAYLAND=1
+#ENV PROTON_USE_WINED3D=1
 
 #ENV XDG_RUNTIME_DIR=/tmp/xdg-runtime
 #RUN mkdir -p "$XDG_RUNTIME_DIR" \
