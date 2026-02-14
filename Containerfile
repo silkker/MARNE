@@ -36,9 +36,8 @@ RUN apt-get update && apt-get install -y \
     zenity \
     gnupg2 \
     winbind \
-    xvfb \
-    xdotool \
     cage \
+    wtype \
     xwayland-run \
     ca-certificates \
     tar \
