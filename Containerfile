@@ -15,11 +15,11 @@ ENV MAXIMA_DISABLE_QRC=1
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get install -y \
     sudo \
+    nano \
+    git \
     strace \
     htop \
-    nano \
     tmux \
-    git \
     curl \
     cargo \
     musl-tools \
@@ -115,7 +115,7 @@ RUN mkdir -p \
 WORKDIR /home/maxima
 
 # Script
-COPY --chown=maxima:maxima maxima.sh /home/maxima/entrypoint.sh
+COPY --chown=maxima:maxima maxima.sh /home/maxima/maxima.sh
 RUN chmod +x /home/maxima/maxima.sh && \
     sed -i -e 's/\r$//' /home/maxima/maxima.sh
 
