@@ -92,7 +92,7 @@ RUN export PATH="/root/.cargo/bin:$PATH" \
 # Install binaries
 RUN install -Dm755 \
       target/x86_64-unknown-linux-musl/release/maxima-cli \
-      target/x86_64-unknown-linux-musl/release/maxima-bootstrapp \
+      target/x86_64-unknown-linux-musl/release/maxima-bootstrap \
       /usr/local/bin/
 
 # Create user
