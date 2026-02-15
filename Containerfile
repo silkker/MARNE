@@ -85,7 +85,8 @@ RUN git clone --recursive https://github.com/ArmchairDevelopers/maxima \
 
 WORKDIR /build/maxima
 RUN export PATH="/root/.cargo/bin:$PATH" \
- && cargo build -p maxima-cli --release --target x86_64-unknown-linux-musl
+ && cargo build -p maxima-cli -p maxima-bootstrap --release --target x86_64-unknown-linux-musl
+
 
 # Install binaries
 RUN install -Dm755 \
@@ -111,6 +112,10 @@ RUN mkdir -p \
     "$HOME/.local/share/applications" \
     "$HOME/.local/share/maxima/wine/prefix" \
     "$HOME/Games"
+
+# Games dir
+RUN sudo mkdir -p /opt/games/ \
+ && sudo chmod 777 /opt/games
 
 WORKDIR /home/maxima
 
