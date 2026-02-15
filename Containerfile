@@ -151,6 +151,6 @@ ENV PROTON_ENABLE_WAYLAND=1
 # && sudo chown root:root /tmp/.X11-unix \
 # && sudo chmod 1777 /tmp/.X11-unix
 
-WORKDIR /home/maxima/Games
+WORKDIR /opt/games
 
 #ENTRYPOINT ["/home/maxima/entrypoint.sh"]
