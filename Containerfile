@@ -8,7 +8,7 @@ ENV RUSTFLAGS="-C target-feature=+crt-static"
 ENV CARGO_TERM_COLOR=always
 ENV MAXIMA_DISABLE_QRC=1
 #ENV MAXIMA_DISABLE_WINE_VERIFICATION=1
-#ENV MAXIMA_WINE_COMMAND="/home/maxima/ge-proton/files/bin/wine64"
+#ENV MAXIMA_WINE_COMMAND="/usr/bin/wine"
 #ENV WINEDLLOVERRIDES=dinput8=n,b
 
 # Dependencies
@@ -91,6 +91,7 @@ RUN export PATH="/root/.cargo/bin:$PATH" \
 # Install binaries
 RUN install -Dm755 \
       target/x86_64-unknown-linux-musl/release/maxima-cli \
+      target/x86_64-unknown-linux-musl/release/maxima-bootstrapp \
       /usr/local/bin/
 
 # Create user
@@ -113,7 +114,7 @@ RUN mkdir -p \
     "$HOME/.local/share/maxima/wine/prefix" \
     "$HOME/Games"
 
-# Games dir
+# games dir
 RUN sudo mkdir -p /opt/games/ \
  && sudo chmod 777 /opt/games
 
