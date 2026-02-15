@@ -113,8 +113,7 @@ RUN mkdir -p \
     "$HOME/.cache" \
     "$HOME/.config/tmux" \
     "$HOME/.local/share/applications" \
-    "$HOME/.local/share/maxima/wine/prefix" \
-    "$HOME/Games"
+    "$HOME/.local/share/maxima/wine/prefix"
 
 # games dir
 RUN sudo mkdir -p /opt/games/ \
