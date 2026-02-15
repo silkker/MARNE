@@ -88,7 +88,6 @@ WORKDIR /build/maxima
 RUN export PATH="/root/.cargo/bin:$PATH" \
  && cargo build -p maxima-cli -p maxima-bootstrap --release --target x86_64-unknown-linux-musl
 
-
 # Install binaries
 RUN install -Dm755 \
       target/x86_64-unknown-linux-musl/release/maxima-cli \
@@ -121,6 +120,9 @@ RUN sudo mkdir -p /opt/games/ \
 
 WORKDIR /home/maxima
 
+# clone repo
+git clone https://github.com/Twig6943/MARNE
+
 # Script
 COPY --chown=maxima:maxima maxima.sh /home/maxima/maxima.sh
 RUN chmod +x /home/maxima/maxima.sh && \
@@ -131,6 +133,9 @@ COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
 
 # tmux.conf
 #COPY --chown=maxima:maxima tmux.conf /home/maxima/.config/tmux/tmux.conf
+
+# import dll_overrides
+PROTONPATH=$HOME/.local/share/maxima/wine/proton WINEPREFIX=$HOME/.local/share/maxima/wine/prefix umu-run $HOME/.local/share/maxima/wine/prefix/drive_c/windows/syswow64/regedit.exe $HOME/Marne/regs/dll_overrides.reg
 
 # Display server stuff
 #ENV DISPLAY=:99
