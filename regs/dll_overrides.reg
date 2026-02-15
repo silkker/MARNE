@@ -2,6 +2,8 @@ Windows Registry Editor Version 5.00
 
 # Gotta do dlloverride this way because the env var is hardcoded https://github.com/ArmchairDevelopers/Maxima/blob/master/maxima-lib/src/unix/wine.rs
 
+# Might switch to sed -i -e 's|WINEDLLOVERRIDES|WINEDLLOVERRIDXX|g' ./binary
+
 # This goes to user.reg when imported
 
 [HKEY_CURRENT_USER\Software\Wine\DllOverrides]
