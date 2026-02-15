@@ -103,7 +103,8 @@ RUN echo "maxima ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/maxima \
 
 USER maxima
 
-# Kill exe alias
+# aliases
+RUN echo "alias btop='btop --utf-force'" >> $HOME/.bashrc
 RUN echo "alias kill_exe='sudo pkill -9 -f "\\.exe"'" >> $HOME/.bashrc
 
 # Create the required dirs
