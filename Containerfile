@@ -11,6 +11,20 @@ ENV MAXIMA_DISABLE_QRC=1
 #ENV MAXIMA_WINE_COMMAND="/usr/bin/wine"
 #ENV WINEDLLOVERRIDES=dinput8=n,b
 
+# Proton stuff
+ENV PROTON_USE_WINED3D=1
+ENV PROTON_ENABLE_WAYLAND=1
+WINEPREFIX=$HOME/.local/share/maxima/wine/prefix
+PROTONPATH=$HOME/.local/share/maxima/wine/proton
+
+# Display server stuff
+#ENV WAYLAND_DISPLAY=wayland-1
+#ENV DISPLAY=:99
+#ENV SDL_VIDEODRIVER=x11
+#ENV GDK_BACKEND=x11
+#ENV LIBGL_ALWAYS_SOFTWARE=1
+#ENV LIBGL_DRI3_DISABLE=1
+
 # Dependencies
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get install -y \
@@ -135,34 +149,11 @@ COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
 COPY --chown=maxima:maxima regs/dll_overrides.reg /home/maxima/dll_overrides.reg
 COPY --chown=maxima:maxima regs/game.reg /home/maxima/game.reg
 
-RUN PROTONPATH=$HOME/.local/share/maxima/wine/proton \
-    WINEPREFIX=$HOME/.local/share/maxima/wine/prefix \
-    umu-run $HOME/.local/share/maxima/wine/prefix/drive_c/windows/syswow64/regedit.exe \
+RUN wlheadless-run -c cage -- umu-run $HOME/.local/share/maxima/wine/prefix/drive_c/windows/syswow64/regedit.exe \
     $HOME/dll_overrides.reg
 
-RUN PROTONPATH=$HOME/.local/share/maxima/wine/proton \
-    WINEPREFIX=$HOME/.local/share/maxima/wine/prefix \
-    umu-run $HOME/.local/share/maxima/wine/prefix/drive_c/windows/syswow64/regedit.exe \
+RUN wlheadless-run -c cage -- umu-run $HOME/.local/share/maxima/wine/prefix/drive_c/windows/syswow64/regedit.exe \
     $HOME/game.reg
-
-# Display server stuff
-#ENV DISPLAY=:99
-#ENV SDL_VIDEODRIVER=x11
-#ENV GDK_BACKEND=x11
-#ENV LIBGL_ALWAYS_SOFTWARE=1
-#ENV LIBGL_DRI3_DISABLE=1
-
-ENV PROTON_USE_WINED3D=1
-ENV PROTON_ENABLE_WAYLAND=1
-#ENV WAYLAND_DISPLAY=wayland-1
-#ENV PROTON_ADD_CONFIG=wayland
-
-#ENV XDG_RUNTIME_DIR=/tmp/xdg-runtime
-#RUN mkdir -p "$XDG_RUNTIME_DIR" \
-# && chmod 700 "$XDG_RUNTIME_DIR" \
-# && sudo mkdir /tmp/.X11-unix \
-# && sudo chown root:root /tmp/.X11-unix \
-# && sudo chmod 1777 /tmp/.X11-unix
 
 WORKDIR /opt/games
 
