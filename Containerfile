@@ -158,5 +158,3 @@ COPY --chown=maxima:maxima regs/game.reg /home/maxima/game.reg
 #    $HOME/game.reg
 
 WORKDIR /opt/games
-
-#ENTRYPOINT ["/home/maxima/entrypoint.sh"]
