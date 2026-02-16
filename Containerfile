@@ -1,0 +1,162 @@
+FROM ubuntu:24.04
+
+# Ports
+EXPOSE 25200/udp
+EXPOSE 11079/tcp
+EXPOSE 3232/udp
+
+# Env vars
+ENV DEBIAN_FRONTEND=noninteractive
+ENV RUSTFLAGS="-C target-feature=+crt-static"
+ENV CARGO_TERM_COLOR=always
+ENV MAXIMA_DISABLE_QRC=1
+#ENV MAXIMA_DISABLE_WINE_VERIFICATION=1
+#ENV MAXIMA_WINE_COMMAND="/usr/bin/wine"
+#ENV WINEDLLOVERRIDES=dinput8=n,b
+
+# Proton stuff
+ENV PROTON_USE_WINED3D=1
+ENV PROTON_ENABLE_WAYLAND=1
+ENV WINEPREFIX=/home/maxima/.local/share/maxima/wine/prefix
+ENV PROTONPATH=/home/maxima/.local/share/maxima/wine/proton
+#ENV PROTON_USE_NTSYNC=1
+#ENV PROTON_NO_ESYNC=1
+
+# Display server stuff
+#ENV WAYLAND_DISPLAY=wayland-1
+#ENV DISPLAY=:99
+#ENV SDL_VIDEODRIVER=x11
+#ENV GDK_BACKEND=x11
+#ENV LIBGL_ALWAYS_SOFTWARE=1
+#ENV LIBGL_DRI3_DISABLE=1
+
+# Dependencies
+RUN dpkg --add-architecture i386
+RUN apt-get update && apt-get install -y \
+    sudo \
+    nano \
+    vim \
+    git \
+    strace \
+    htop \
+    btop \
+    tmux \
+    curl \
+    cargo \
+    musl-tools \
+    locales \
+    libx11-dev \
+    libxcursor-dev \
+    libxcb1-dev \
+    libxi-dev \
+    libxkbcommon-dev \
+    libxkbcommon-x11-dev \
+    protobuf-compiler \
+    xdg-utils \
+    zenity \
+    gnupg2 \
+    winbind \
+    cage \
+    wtype \
+    xwayland-run \
+    ca-certificates \
+    tar \
+    xz-utils \
+    unzip \
+    lib32gcc-s1 \
+    lib32stdc++6 \
+    libc6-i386
+
+# Locale
+RUN sudo locale-gen en_US.UTF-8 \
+ && sudo update-locale LANG=en_US.UTF-8
+
+# Wine from the upstream repo
+RUN mkdir -pm755 /etc/apt/keyrings && \
+    curl -fsSL https://dl.winehq.org/wine-builds/winehq.key \
+        -o /etc/apt/keyrings/winehq-archive.key && \
+    curl -fsSL https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources \
+        -o /etc/apt/sources.list.d/winehq-noble.sources && \
+    apt-get update && \
+    apt-get install -y --install-recommends winehq-devel
+
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
+
+RUN export PATH="/root/.cargo/bin:$PATH" \
+ && rustup target add x86_64-unknown-linux-musl
+
+# umu
+RUN set -eux; \
+    ver="$( \
+      curl -sIL https://github.com/Open-Wine-Components/umu-launcher/releases/latest \
+      | grep -i '^location:' \
+      | sed -E 's|.*tag/||' \
+      | tr -d '\r' \
+    )"; \
+    curl -Lo /tmp/umu-launcher.deb \
+      "https://github.com/Open-Wine-Components/umu-launcher/releases/download/${ver}/python3-umu-launcher_${ver}-1_amd64_ubuntu-noble.deb"; \
+    apt-get install -y /tmp/umu-launcher.deb; \
+    rm -f /tmp/umu-launcher.deb;
+
+# Build maxima (gotta keep doing so till their first release)
+WORKDIR /build
+RUN git clone --recursive https://github.com/ArmchairDevelopers/maxima \
+ && cd maxima \
+ && git checkout cbde5f0002d6f16fb67dfa79ad96b705e1c591bf
+
+WORKDIR /build/maxima
+RUN export PATH="/root/.cargo/bin:$PATH" \
+ && cargo build -p maxima-cli -p maxima-bootstrap --release --target x86_64-unknown-linux-musl
+
+# Install binaries
+RUN install -Dm755 \
+      target/x86_64-unknown-linux-musl/release/maxima-cli \
+      target/x86_64-unknown-linux-musl/release/maxima-bootstrap \
+      /usr/local/bin/
+
+# Create user
+RUN useradd -m -s /bin/bash maxima
+
+# Give maxima sudo without password
+RUN echo "maxima ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/maxima \
+ && chmod 0440 /etc/sudoers.d/maxima
+
+USER maxima
+
+# aliases
+RUN echo "alias btop='btop --utf-force'" >> $HOME/.bashrc
+RUN echo "alias kill_exe='sudo pkill -9 -f "\\.exe"'" >> $HOME/.bashrc
+
+# Create the required dirs
+RUN mkdir -p \
+    "$HOME/.cache" \
+    "$HOME/.config/tmux" \
+    "$HOME/.local/share/applications" \
+    "$HOME/.local/share/maxima/wine/prefix"
+
+# games dir
+RUN sudo mkdir -p /opt/games/ \
+ && sudo chmod 777 /opt/games
+
+# Script
+COPY --chown=maxima:maxima maxima.sh /home/maxima/maxima.sh
+RUN chmod +x /home/maxima/maxima.sh && \
+    sed -i -e 's/\r$//' /home/maxima/maxima.sh
+
+# auth.toml
+COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
+
+# tmux.conf
+#COPY --chown=maxima:maxima tmux.conf /home/maxima/.config/tmux/tmux.conf
+
+# regedit
+COPY --chown=maxima:maxima regs/dll_overrides.reg /home/maxima/dll_overrides.reg
+COPY --chown=maxima:maxima regs/game.reg /home/maxima/game.reg
+
+#RUN wlheadless-run -c cage -- umu-run $HOME/.local/share/maxima/wine/prefix/drive_c/windows/syswow64/regedit.exe \
+#    $HOME/dll_overrides.reg
+
+#RUN wlheadless-run -c cage -- umu-run $HOME/.local/share/maxima/wine/prefix/drive_c/windows/syswow64/regedit.exe \
+#    $HOME/game.reg
+
+WORKDIR /opt/games

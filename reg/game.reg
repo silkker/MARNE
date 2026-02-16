@@ -1,0 +1,60 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\Software\EA]
+
+[HKEY_LOCAL_MACHINE\Software\EA\AC]
+
+[HKEY_LOCAL_MACHINE\Software\EA\AC\Installs]
+"bf1"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\Software\EA Games]
+
+[HKEY_LOCAL_MACHINE\Software\EA Games\Battlefield 1]
+"DisplayName"="Battlefield™ 1"
+"Install Dir"="Z:\\opt\\games\\bf1\\"
+"Locale"="en_US"
+"Product GUID"="{335B50BC-6130-4BAF-9A6A-F1561270587B}"
+
+[HKEY_LOCAL_MACHINE\Software\Electronic Arts]
+
+[HKEY_LOCAL_MACHINE\Software\Electronic Arts\EA Desktop]
+"InstallSuccessful"="true"
+
+[HKEY_LOCAL_MACHINE\Software\Electronic Arts\Origin]
+"ClientPath"="C:/Windows/System32/conhost.exe"
+"InstallSuccessful"="true"
+
+[HKEY_LOCAL_MACHINE\Software\Wow6432Node\EA Games]
+
+[HKEY_LOCAL_MACHINE\Software\Wow6432Node\EA Games\Battlefield 1]
+"DisplayName"="Battlefield™ 1"
+"Install Dir"="Z:\\opt\\games\\bf1\\"
+"Locale"="en_US"
+"Product GUID"="{335B50BC-6130-4BAF-9A6A-F1561270587B}"
+
+[HKEY_LOCAL_MACHINE\Software\Wow6432Node\EA Games\Battlefield 1\InstallOptSelect]
+@="1"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Origin Games\1026023]
+"locale"="en_US"
+"DisplayName"="Battlefield™ 1"
+
+[HKEY_LOCAL_MACHINE\Software\Wow6432Node\Electronic Arts]
+
+[HKEY_LOCAL_MACHINE\Software\Wow6432Node\Electronic Arts\EA Desktop]
+"InstallSuccessful"="true"
+
+[HKEY_LOCAL_MACHINE\Software\Wow6432Node\Electronic Arts\Origin]
+"ClientPath"="C:/Windows/System32/conhost.exe"
+"InstallSuccessful"="true"
+
+[HKEY_LOCAL_MACHINE\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{335B50BC-6130-4BAF-9A6A-F1561270587B}]
+"DisplayIcon"="\"Z:\\opt\\games\\bf1\\bf1.exe\""
+"DisplayName"="Battlefield™ 1"
+"DisplayVersion"="1.0.78.30969"
+"EstimatedSize"=dword:000ed365
+"HelpLink"="Z:\\opt\\games\\bf1\\Support\\EA Help\\Technical Support.en_US.rtf"
+"InstallLocation"="Z:\\opt\\games\\bf1\\"
+"Publisher"="Electronic Arts"
+"UninstallString"="\"C:\\Program Files\\Common FilesEAInstaller\\Battlefield 1\\Cleanup.exe\" uninstall_game -autologging"
+"URLInfoAbout"="http://www.ea.com"
