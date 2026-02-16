@@ -151,7 +151,7 @@ COPY --chown=maxima:maxima auth.toml /home/maxima/.local/share/maxima/auth.toml
 
 # regedit
 COPY --chown=maxima:maxima regs/dll_overrides.reg /home/maxima/dll_overrides.reg
-COPY --chown=maxima:maxima regs/game.reg /home/maxima/game.reg
+COPY --chown=maxima:maxima regs/bf1.reg /home/maxima/bf1.reg
 
 #RUN wlheadless-run -c cage -- umu-run $HOME/.local/share/maxima/wine/prefix/drive_c/windows/syswow64/regedit.exe \
 #    $HOME/dll_overrides.reg
