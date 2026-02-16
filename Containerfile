@@ -132,8 +132,6 @@ RUN mkdir -p \
 RUN sudo mkdir -p /opt/games/ \
  && sudo chmod 777 /opt/games
 
-WORKDIR /home/maxima
-
 # Script
 COPY --chown=maxima:maxima maxima.sh /home/maxima/maxima.sh
 RUN chmod +x /home/maxima/maxima.sh && \
