@@ -1,9 +1,9 @@
 FROM ubuntu:24.04
 
 # Ports
-EXPOSE 25200
-EXPOSE 11079
-EXPOSE 3232
+EXPOSE 25200/udp
+EXPOSE 11079/tcp
+EXPOSE 3232/udp
 
 # Env vars
 ENV DEBIAN_FRONTEND=noninteractive
