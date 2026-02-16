@@ -3,6 +3,7 @@ FROM ubuntu:24.04
 # Ports
 EXPOSE 25200
 EXPOSE 11079
+EXPOSE 3232
 
 # Env vars
 ENV DEBIAN_FRONTEND=noninteractive
